@@ -7,6 +7,8 @@ In conclusion, DGDRP in the context of drug response prediction can select genes
 
 ![Overview](images/overview.png)
 
+# Install
+```
 torch                     2.0.1+cu118
 torch-geometric           2.3.1
 torch-scatter             2.1.2
@@ -16,10 +18,31 @@ gseapy                    1.0.6
 scikit-learn              1.3.0
 scipy                     1.11.2
 rdkit                     2023.3.3
+```
 
 # Data
+ * __Drug data__: `Data/drug_data.pt`
+ * __Cell line gene expression data__: `expression_10k_genes_data_total.pt`
+     * Cell line gene expression data file is too large to upload to this repository. This file would be provided upon request to `alsdn9626@gmail.com`.
+ * __Heterogeneous network__: `Data/template_adjacency_matrix_20_indirect_targets.tsv`
+     * The STRING template network `9606.protein.links.symbols.v11.5.txt` is not uploaded due to its larg size.
+(STRING template network can be obtained from [STRING_database](https://string-db.org/cgi/download?sessionId=bJ9NZpNP7Bn4&species_text=Homo+sapiens). The gene names have to be converted from ensembl IDs to gene symbols.)
+ * __Drug response data__: `Data/response_data_total.tsv`
 
+# Run
+1. Construct heterogeneous network data
+    ```
+    python 01_heterogeneous_network_construction.py --workdir <DIR_PATH>/heteronet --n_indirect_targets 20
+    ```
 
-The STRING template network `9606.protein.links.symbols.v11.5.txt` is not uploaded due to its larg size.
-(STRING template network can be obtained from [STRING_database](https://string-db.org/cgi/download?sessionId=bJ9NZpNP7Bn4&species_text=Homo+sapiens).  
-The gene names have to be converted from ensembl IDs to gene symbols.)
+2. Make graph dataset
+    ```
+    python 02_construct_gnn_dataset.py --datadir <WORKDIR>/Data --n_indirect_targets 20 --data_type 20_indirect_targets
+    ```
+
+3. Train
+    ```
+    bash run_heteronet.sh
+    ```
+
+The results can be found in `./Results/` directory.
