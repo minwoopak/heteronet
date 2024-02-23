@@ -45,7 +45,7 @@ def seed_everything(seed = 1024):
 parser = argparse.ArgumentParser()
 args, _ = parser.parse_known_args()
 
-parser.add_argument('--model_name', type=str, default='HeteroNet_AllConcat_Top1000_231107')
+parser.add_argument('--model_name', type=str, default='HeteroNet_AllConcat_Top1000_231111')
 parser.add_argument('--device', type=str, default='0')
 parser.add_argument('--split_by', type=str, default='drug')
 # parser.add_argument('--response_type', type=str, default='IC50')
@@ -61,20 +61,20 @@ parser.add_argument('--weight_decay', type=float, default=1e-6)
 parser.add_argument('--display_step', type=int, default=1500)
 parser.add_argument('--testset_yes', type=bool, default=True)
 parser.add_argument('--patience', type=int, default=6)
-parser.add_argument('--currentdir', type=str, default='/data/project/minwoo/feature_selection/phase_5_selection_method_comparison_split_corrected')
-parser.add_argument('--datadir', type=str, default='/data/project/minwoo/Data')
-parser.add_argument('--root', type=str, default='/data/project/minwoo/Data/feature_selection/graph_pyg/50_indirect_targets')
+parser.add_argument('--currentdir', type=str, default='/data/project/inyoung/DGDRP/')
+parser.add_argument('--datadir', type=str, default='/data/project/inyoung/DGDRP/Data')
+parser.add_argument('--root', type=str, default='/data/project/inyoung/DGDRP/Data/graph_pyg/20_indirect_targets')
 
-parser.add_argument('--data_type', type=str, default='50_indirect_targets')
+parser.add_argument('--data_type', type=str, default='20_indirect_targets')
 parser.add_argument('--template_adj_fname', type=str, default='template_adjacency_matrix_20_indirect_targets.tsv')
 
 args = parser.parse_args()
 
 
-response_fpath = os.path.join(args.datadir, 'drug_response', 'response_data_total.tsv')
-expression_fpath = os.path.join(args.datadir, 'drug_response', 'expression_10k_genes_data_total.pt')
-drug_fp_fpath = os.path.join(args.datadir, 'drug_response', 'drug_data_total.pt')
-template_adj_fpath = os.path.join(args.datadir, 'feature_selection', args.template_adj_fname) ####
+response_fpath = os.path.join(args.datadir, 'response_data_total.tsv')
+expression_fpath = os.path.join(args.datadir, 'expression_10k_genes_data_total.pt')
+drug_fp_fpath = os.path.join(args.datadir, 'drug_data_total.pt')
+template_adj_fpath = os.path.join(args.datadir, args.template_adj_fname) ####
 
 device = torch.device(f"cuda:{args.device}" if torch.cuda.is_available() else "cpu")
 print('torch version: ', torch.__version__)
