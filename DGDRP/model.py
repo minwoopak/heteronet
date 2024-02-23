@@ -193,4 +193,4 @@ class HeteroNet_EmbConcatTotal(nn.Module):
         for fc in self.classifier:
             x = fc(x)
         output = self.fc2(x)
-        return output, similarity_vector, mask, topk_indices
+        return mask # output, similarity_vector, mask, topk_indices

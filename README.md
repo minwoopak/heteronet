@@ -46,3 +46,6 @@ rdkit                     2023.3.3
     ```
 
 The results can be found in `./Results/` directory.
+
+If you want to inspect genes selected by the model, pass a data batch to the `.get_mask()` method of the model which returns the mask that masks the gene expression profiles.  
+The genes with the indices where 1s are located in the mask are the **selected genes**.
