@@ -8,7 +8,7 @@ import torch
 
 
 class DrugResponse_Dataset(Dataset):
-    def __init__(self, response_data, expression_data, drug_data, adjacency_matrix, root='/data/project/minwoo/', data_type='50_indirect_targets', transform=None, pre_transform=None): # , response_type='IC50'
+    def __init__(self, response_data, expression_data, drug_data, root='/data/project/minwoo/', data_type='50_indirect_targets', transform=None, pre_transform=None): # , response_type='IC50', adjacency_matrix
         """
         root = Where the dataset should be stored. This folder is split
         into raw_dir (downloaded dataset) and processed_dir (processed data).
@@ -21,13 +21,13 @@ class DrugResponse_Dataset(Dataset):
         self.response_data = response_data
         self.expression_data = expression_data.float()
         self.drug_data = drug_data.float()
-        self.adjacency_matrix = adjacency_matrix
+        # self.adjacency_matrix = adjacency_matrix
 
-        self.node_list = self.adjacency_matrix.columns.to_list()
+        # self.node_list = self.adjacency_matrix.columns.to_list()
 
         super(DrugResponse_Dataset, self).__init__(root, transform, pre_transform)
-        print(self.raw_dir)
-        print(self.processed_dir)
+        # print(self.raw_dir)
+        print("Graph Data Dir:", self.processed_dir)
         
 
     @property
@@ -48,6 +48,8 @@ class DrugResponse_Dataset(Dataset):
         pass
 
     def process(self):
+        print("Graph Data Dir:", self.processed_dir)
+        print("Graph Data Filename:", os.path.join(self.processed_dir, f'graph_{self.data_type}_999.pt'))
         assert len(self.response_data) == len(self.expression_data)
         raise RuntimeError('Dataset should be already processed.')
         # for index, row in tqdm(self.response_data.iterrows()):

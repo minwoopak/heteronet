@@ -15,7 +15,7 @@ import pandas as pd
 from collections import defaultdict
 import gseapy as gp
 
-parser.add_argument('--workdir', type=str, default='/project/DGDRP')
+parser.add_argument('--workdir', type=str, default='/data/project/inyoung/DGDRP')
 parser.add_argument('--n_indirect_targets', type=int, default=20)
 
 args = parser.parse_args()

@@ -45,7 +45,7 @@ def seed_everything(seed = 1024):
 parser = argparse.ArgumentParser()
 args, _ = parser.parse_known_args()
 
-parser.add_argument('--model_name', type=str, default='HeteroNet_AllConcat_Top1000_231111')
+parser.add_argument('--model_name', type=str, default='DGDRP_Top1000')
 parser.add_argument('--device', type=str, default='0')
 parser.add_argument('--split_by', type=str, default='drug')
 # parser.add_argument('--response_type', type=str, default='IC50')
@@ -61,12 +61,13 @@ parser.add_argument('--weight_decay', type=float, default=1e-6)
 parser.add_argument('--display_step', type=int, default=1500)
 parser.add_argument('--testset_yes', type=bool, default=True)
 parser.add_argument('--patience', type=int, default=6)
-parser.add_argument('--currentdir', type=str, default='/data/project/inyoung/DGDRP/')
+
+parser.add_argument('--currentdir', type=str, default='/data/project/inyoung/DGDRP')
 parser.add_argument('--datadir', type=str, default='/data/project/inyoung/DGDRP/Data')
 parser.add_argument('--root', type=str, default='/data/project/inyoung/DGDRP/Data/graph_pyg/20_indirect_targets')
 
 parser.add_argument('--data_type', type=str, default='20_indirect_targets')
-parser.add_argument('--template_adj_fname', type=str, default='template_adjacency_matrix_20_indirect_targets.tsv')
+# parser.add_argument('--template_adj_fname', type=str, default='template_adjacency_matrix.tsv')
 
 args = parser.parse_args()
 
@@ -74,7 +75,7 @@ args = parser.parse_args()
 response_fpath = os.path.join(args.datadir, 'response_data_total.tsv')
 expression_fpath = os.path.join(args.datadir, 'expression_10k_genes_data_total.pt')
 drug_fp_fpath = os.path.join(args.datadir, 'drug_data_total.pt')
-template_adj_fpath = os.path.join(args.datadir, args.template_adj_fname) ####
+# template_adj_fpath = os.path.join(args.datadir, args.template_adj_fname) ####
 
 device = torch.device(f"cuda:{args.device}" if torch.cuda.is_available() else "cpu")
 print('torch version: ', torch.__version__)
@@ -256,10 +257,10 @@ for var1 in list_var1:
         response_data = response_data.reset_index().rename(columns={'index':'idx'})
         expression_data = torch.load(expression_fpath)
         drug_data = torch.load(drug_fp_fpath)
-        adjacency_matrix = pd.read_csv(template_adj_fpath, sep='\t', index_col=0, header=0)
+        # adjacency_matrix = pd.read_csv(template_adj_fpath, sep='\t', index_col=0, header=0)
 
-        total_dataset = DrugResponse_Dataset(response_data, expression_data, drug_data, adjacency_matrix, 
-                                        root=args.root, data_type=args.data_type) # response_type=args.response_type
+        total_dataset = DrugResponse_Dataset(response_data, expression_data, drug_data, 
+                                        root=args.root, data_type=args.data_type) # response_type=args.response_type, adjacency_matrix
 
         # ========================================== #
         # ====== CV: Train/Valid & Test Split ====== #

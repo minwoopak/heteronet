@@ -1,22 +1,33 @@
 #!/bin/bash
 
-MODEL_NAME="HeteroNet_Top1000"
+CURRENT_DIR="/data/project/inyoung/DGDRP"
+DATA_DIR="${CURRENT_DIR}/Data"
+GRAPH_ROOT_DIR="${DATA_DIR}/graph_pyg/20_indirect_targets"
+
+MODEL_NAME="DGDRP_Top1000"
 DATA_TYPE="20_indirect_targets"
-ADJ_FNAME="template_adjacency_matrix_${DATA_TYPE}.tsv"
-SPLIT_BY="drug"
-DEVICE="0"
+SPLIT_BY=("drug") # ("drug" "cell")
+DEVICE="2"
+BATCH_SIZE=64
 SEEDS=(1024 1234 4567)
 
 for SEED in "${SEEDS[@]}"
 do
-    echo "Running heteronet.py with SEED=$SEED"
+    for SPLIT in "${SPLIT_BY[@]}"
+    do
+        echo "Running heteronet.py with SEED=$SEED"
 
-    python heteronet.py \
-        --model_name="${MODEL_NAME}_${SEED}_${DATA_TYPE}" \
-        --template_adj_fname="$ADJ_FNAME" \
-        --device="$DEVICE" \
-        --split_by="$SPLIT_BY" \
-        --seed="$SEED"
+        python heteronet.py \
+            --data_type="${DATA_TYPE}" \
+            --currentdir="${CURRENT_DIR}" \
+            --datadir="${DATA_DIR}" \
+            --model_name="${MODEL_NAME}_${SEED}_${DATA_TYPE}" \
+            --root="${GRAPH_ROOT_DIR}" \
+            --device="${DEVICE}" \
+            --split_by="${SPLIT_BY}" \
+            --batch_size="${BATCH_SIZE}" \
+            --seed="${SEED}"
 
-    echo "Finished running heteronet.py with SEED=$SEED"
+        echo "Finished running heteronet.py with SEED=$SEED"
+    done
 done

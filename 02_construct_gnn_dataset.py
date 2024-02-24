@@ -31,7 +31,7 @@ def seed_everything(seed = 3078):
 seed_everything()
 
 
-parser.add_argument('--datadir', type=str, default='/data/project/inyoung/Data')
+parser.add_argument('--datadir', type=str, default='/data/project/inyoung/DGDRP/Data')
 parser.add_argument('--n_indirect_targets', type=int, default=20)
 parser.add_argument('--data_type', type=str, default='20_indirect_targets')
 
@@ -46,7 +46,7 @@ response_data = response_data.reset_index().rename(columns={'index':'idx'})
 expression_data = pd.read_csv(expression_fpath, sep='\t', index_col=0, header=0)
 drug_data = pd.read_csv(drug_fp_fpath, sep='\t', index_col=0)
 
-root = os.path.join(args.datadir, 'graph_pyg')
+root = os.path.join(args.datadir, 'graph_pyg', args.data_type)
 
 
 # =========================== #
